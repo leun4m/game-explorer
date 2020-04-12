@@ -1,5 +1,5 @@
 use crate::database;
-use crate::game::Game;
+use crate::game::{Game, GameType};
 
 pub fn get_games() -> Vec<Game> {
     database::get_games().expect("Couldn't get games")
@@ -15,8 +15,8 @@ pub fn get_game(id: u32) -> Option<Game> {
     game
 }
 
-pub fn create_game(name: String, min_players: u8, max_players: u8, is_turn_based: bool) -> Game {
-    let game = Game::new(next_game_id(), name.as_ref(), min_players, max_players, is_turn_based);
+pub fn create_game(name: String, min_players: u8, max_players: u8, is_turn_based: bool, game_type: GameType) -> Game {
+    let game = Game::new(next_game_id(), name.as_ref(), min_players, max_players, is_turn_based, game_type);
     database::save_game(&game).expect("Couldn't save game");
     game
 }

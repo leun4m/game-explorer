@@ -1,8 +1,7 @@
 use actix_web::{delete, get, post, put, Responder, HttpResponse, web, Error};
-use crate::game::Game;
+use crate::game::{Game, GameType};
 use crate::service;
 use serde::{Deserialize};
-
 
 mod content_types {
     pub const JSON: &str = "application/json";
@@ -42,13 +41,14 @@ pub struct CreateGameDto {
     min_players: u8,
     max_players: u8,
     is_turn_based: bool,
+    game_type: GameType,
 }
 
 #[post("/games")]
 pub async fn create_game(game: web::Json<CreateGameDto>) -> Result<HttpResponse, Error> {
     println!("Create Game");
 
-    let game = service::create_game(game.name.as_str().to_string(), game.min_players, game.max_players, game.is_turn_based);
+    let game = service::create_game(game.name.as_str().to_string(), game.min_players, game.max_players, game.is_turn_based, game.game_type);
     Ok(HttpResponse::Ok().json(game))
 }
 
