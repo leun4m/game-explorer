@@ -49,7 +49,7 @@ pub async fn create_game(game: web::Json<CreateGameDto>) -> Result<HttpResponse,
     println!("Create Game");
 
     let game = service::create_game(game.name.as_str().to_string(), game.min_players, game.max_players, game.is_turn_based, game.game_type);
-    Ok(HttpResponse::Ok().json(game))
+    Ok(HttpResponse::NoContent().body(""))
 }
 
 #[put("/games/{game_id}")]
@@ -60,12 +60,12 @@ pub async fn update_game(params: web::Path<Info>, game: web::Json<Game>) -> Resu
     }
 
     let game = service::update_game(game.into_inner());
-    Ok(HttpResponse::Ok().json(game))
+    Ok(HttpResponse::NoContent().body(""))
 }
 
 #[delete("/games/{game_id}")]
 pub async fn delete_game(params: web:: Path<Info>) -> Result<HttpResponse, Error> {
     println!("Delete Game");
     service::delete_game(params.game_id);
-    Ok(HttpResponse::Ok().body("Delete successful"))
+    Ok(HttpResponse::NoContent().body(""))
 }
