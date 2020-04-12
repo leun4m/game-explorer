@@ -1,4 +1,5 @@
 use serde::{Serialize, Deserialize};
+use std::cmp::max;
 
 #[derive(Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
@@ -12,6 +13,10 @@ pub struct Game {
 
 impl Game {
     pub fn new(id: u32, name: &str, min_players: u8, max_players: u8, is_turn_based: bool) -> Game {
+        assert_ne!(name, "", "name must not be empty");
+        assert!(min_players > 0, "min_players must be higher than 0");
+        assert!(max_players > 0, "max_players must be higher than 0");
+        assert!(min_players <= max_players, "max_players must not be lower than min_players");
         Game {
             id,
             name: String::from(name),
