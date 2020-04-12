@@ -1,0 +1,113 @@
+openapi: 3.0.0
+info:
+  version: 0.2.0
+  title: GameExplorer
+servers:
+  - url: 'http://localhost:8088'
+paths:
+  /games:
+    get:
+      summary: 'Lists details about all games'
+      description: 'Lists the details of all games'
+      responses:
+        '200':
+          description: 'Sample response: Details about multiple games'
+          content:
+            application/json:
+              schema:
+                type: 'array'
+                items:
+                  $ref: '#/components/schemas/Game'
+    post:
+      summary: 'Add a game to the collection'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateGameDto'
+      responses:
+        '204':
+          description: 'Create successful'
+
+  /games/{id}:
+    parameters:
+      - name: id
+        in: path
+        description: ID of game
+        required: true
+        schema:
+          type: integer
+    get:
+      summary: 'Finds game by id'
+      description: 'Lists the details the game by the given id.'
+      responses:
+        '200':
+          description: 'Sample response: Details about a game'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Game'
+    put:
+      summary: 'Updates game details'
+      description: 'Overrides all the details of the game with the given one, if something is not specified it will be empty'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Game'
+      responses:
+        '204':
+          description: "Update successful"
+    delete:
+      summary: 'Deletes the game'
+      description: 'Deletes the game from the collection'
+      responses:
+        '204':
+          description: "Delete successful"
+components:
+  schemas:
+    Game:
+      type: object
+      required:
+        - id
+        - name
+        - minPlayers
+        - maxPlayers
+        - isTurnBased
+        - gameType
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        minPlayers:
+          type: integer
+        maxPlayers:
+          type: integer
+        isTurnBased:
+          type: boolean
+        gameType:
+          $ref: '#/components/schemas/GameType'
+    GameType:
+      type: string
+      enum: [BOARD, CARD, DICE, SPECIAL]
+    CreateGameDto:
+      type: object
+      required:
+        - name
+        - minPlayers
+        - maxPlayers
+        - isTurnBased
+        - gameType
+      properties:
+        name:
+          type: string
+        minPlayers:
+          type: integer
+        maxPlayers:
+          type: integer
+        isTurnBased:
+          type: boolean
+        gameType:
+          $ref: '#/components/schemas/GameType'
+   
