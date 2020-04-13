@@ -15,15 +15,13 @@ class GameFilter extends React.Component {
       },
       games: [],
     };
-    this.handleInputChange = this.handleInputChange.bind(this);
-    this.handleSortChange = this.handleSortChange.bind(this);
   }
 
   componentDidMount() {
     GameService.getGames().then((games) => this.setState({ games: games }));
   }
 
-  handleInputChange(event) {
+  handleInputChange = (event) => {
     const target = event.target;
     const name = target.name;
     const value = target.type === "checkbox" ? target.checked : target.value;
@@ -34,9 +32,9 @@ class GameFilter extends React.Component {
         [name]: value,
       },
     });
-  }
+  };
 
-  handleSortChange(event) {
+  handleSortChange = (event) => {
     const target = event.target;
     const name = target.name;
     const value = target.type === "checkbox" ? target.checked : target.value;
@@ -47,7 +45,7 @@ class GameFilter extends React.Component {
         [name]: value,
       },
     });
-  }
+  };
 
   get filteredGames() {
     const filter = this.state.filter;
@@ -62,12 +60,11 @@ class GameFilter extends React.Component {
       .sort((gameA, gameB) => {
         const a = gameA[this.state.sort.sortBy];
         const b = gameB[this.state.sort.sortBy];
-        console.log(a, b);
+
         if (a > b) {
-          return this.state.sort.ascending ? -1 : 1;
-        }
-        if (b > a) {
           return this.state.sort.ascending ? 1 : -1;
+        } else if (b > a) {
+          return this.state.sort.ascending ? -1 : 1;
         }
         return 0;
       });
