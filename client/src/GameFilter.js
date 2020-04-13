@@ -8,6 +8,7 @@ class GameFilter extends React.Component {
     this.state = {
       filter: {
         players: "",
+        isTurnBased: "nil",
       },
       sort: {
         sortBy: "name",
@@ -50,13 +51,18 @@ class GameFilter extends React.Component {
   get filteredGames() {
     const filter = this.state.filter;
     const games = this.state.games
-      .filter((game) => {
-        return (
+      .filter(
+        (game) =>
           !filter.players ||
           (game.minPlayers <= filter.players &&
             game.maxPlayers >= filter.players)
-        );
-      })
+      )
+      .filter(
+        (game) =>
+          this.state.filter.isTurnBased === "nil" ||
+          (filter.isTurnBased === "yes" && game.isTurnBased) ||
+          (filter.isTurnBased === "no" && !game.isTurnBased)
+      )
       .sort((a, b) => {
         const sortBy = this.state.sort.sortBy;
         a = a[sortBy];
@@ -107,6 +113,18 @@ class GameFilter extends React.Component {
               value={this.state.filter.players}
               onChange={this.handleInputChange}
             />
+          </label>
+          <label>
+            Turn based:
+            <select
+              name="isTurnBased"
+              value={this.state.filter.isTurnBased}
+              onChange={this.handleInputChange}
+            >
+              <option value="nil">---</option>
+              <option value="yes">Yes</option>
+              <option value="no">No</option>
+            </select>
           </label>
         </aside>
         <main>
