@@ -9,9 +9,12 @@ class GameFilter extends React.Component {
       filter: {
         players: "",
       },
+      sortBy: "name",
+      sortAscending: true,
       games: [],
     };
     this.handleInputChange = this.handleInputChange.bind(this);
+    this.handleSortDirectionChange = this.handleSortDirectionChange.bind(this);
   }
 
   componentDidMount() {
@@ -30,14 +33,36 @@ class GameFilter extends React.Component {
     });
   }
 
+  handleSortDirectionChange(event) {
+    const target = event.target;
+    const value = target.checked;
+
+    this.setState({
+      sortAscending: value,
+    });
+  }
+
   get filteredGames() {
     const filter = this.state.filter;
-    return this.state.games.filter((game) => {
-      return (
-        !filter.players ||
-        (game.minPlayers <= filter.players && game.maxPlayers >= filter.players)
-      );
-    });
+    return this.state.games
+      .filter((game) => {
+        return (
+          !filter.players ||
+          (game.minPlayers <= filter.players &&
+            game.maxPlayers >= filter.players)
+        );
+      })
+      .sort((a, b) => {
+        const ax = a[this.state.sortBy];
+        const bx = b[this.state.sortBy];
+        if (ax > bx) {
+          return this.state.sortAscending ? -1 : 1;
+        }
+        if (bx > ax) {
+          return this.state.sortAscending ? 1 : -1;
+        }
+        return 0;
+      });
   }
 
   render() {
@@ -46,7 +71,17 @@ class GameFilter extends React.Component {
         <aside>
           <h2>Filter</h2>
           <label>
-            Players
+            Sort ascending:
+            <input
+              type="checkbox"
+              name="sortAscending"
+              checked={this.state.sortAscending}
+              onChange={this.handleSortDirectionChange}
+            />
+          </label>
+          <br />
+          <label>
+            Players:
             <input
               type="number"
               name="players"

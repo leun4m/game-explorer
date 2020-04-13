@@ -4,3 +4,7 @@
 .flex-container aside {
   min-width: 240px;
 }
+.flex-container aside,
+.flex-container main {
+  padding: 1em;
+}
