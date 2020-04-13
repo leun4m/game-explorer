@@ -9,12 +9,14 @@ class GameFilter extends React.Component {
       filter: {
         players: "",
       },
-      sortBy: "name",
-      sortAscending: true,
+      sort: {
+        sortBy: "name",
+        ascending: true,
+      },
       games: [],
     };
     this.handleInputChange = this.handleInputChange.bind(this);
-    this.handleSortDirectionChange = this.handleSortDirectionChange.bind(this);
+    this.handleSortChange = this.handleSortChange.bind(this);
   }
 
   componentDidMount() {
@@ -28,17 +30,22 @@ class GameFilter extends React.Component {
 
     this.setState({
       filter: {
+        ...this.state.filter,
         [name]: value,
       },
     });
   }
 
-  handleSortDirectionChange(event) {
+  handleSortChange(event) {
     const target = event.target;
-    const value = target.checked;
+    const name = target.name;
+    const value = target.type === "checkbox" ? target.checked : target.value;
 
     this.setState({
-      sortAscending: value,
+      sort: {
+        ...this.state.sort,
+        [name]: value,
+      },
     });
   }
 
@@ -52,14 +59,15 @@ class GameFilter extends React.Component {
             game.maxPlayers >= filter.players)
         );
       })
-      .sort((a, b) => {
-        const ax = a[this.state.sortBy];
-        const bx = b[this.state.sortBy];
-        if (ax > bx) {
-          return this.state.sortAscending ? -1 : 1;
+      .sort((gameA, gameB) => {
+        const a = gameA[this.state.sort.sortBy];
+        const b = gameB[this.state.sort.sortBy];
+        console.log(a, b);
+        if (a > b) {
+          return this.state.sort.ascending ? -1 : 1;
         }
-        if (bx > ax) {
-          return this.state.sortAscending ? 1 : -1;
+        if (b > a) {
+          return this.state.sort.ascending ? 1 : -1;
         }
         return 0;
       });
@@ -69,17 +77,29 @@ class GameFilter extends React.Component {
     return (
       <div className="flex-container">
         <aside>
-          <h2>Filter</h2>
+          <h2>Sort</h2>
           <label>
             Sort ascending:
             <input
               type="checkbox"
-              name="sortAscending"
-              checked={this.state.sortAscending}
-              onChange={this.handleSortDirectionChange}
+              name="ascending"
+              checked={this.state.sort.ascending}
+              onChange={this.handleSortChange}
             />
           </label>
-          <br />
+          <label>
+            Sort by:
+            <select
+              name="sortBy"
+              value={this.state.sort.sortBy}
+              onChange={this.handleSortChange}
+            >
+              <option value="name">Name</option>
+              <option value="minPlayers">Min. Players</option>
+              <option value="maxPlayers">Max. Players</option>
+            </select>
+          </label>
+          <h2>Filter</h2>
           <label>
             Players:
             <input

@@ -57,7 +57,7 @@ class CreateGame extends React.Component {
           />
         </label>
         <label>
-          Minimal Players:
+          Min. Players:
           <input
             type="number"
             name="minPlayers"
@@ -68,7 +68,7 @@ class CreateGame extends React.Component {
           />
         </label>
         <label>
-          Minimal Players:
+          Max. Players:
           <input
             type="number"
             name="maxPlayers"
