@@ -12,8 +12,25 @@ pub fn get_games_filtered(filter_params: FilterParams) -> Vec<Game> {
         .iter()
         .cloned()
         .filter(|game| {
-            filter_params.is_turn_based.is_none()
-                || game.is_turn_based == filter_params.is_turn_based.unwrap()
+            if filter_params.players.is_none() {
+                return true;
+            }
+            game.is_turn_based == filter_params.is_turn_based.unwrap()
+        })
+        .filter(|game| {
+            if filter_params.players.is_none() {
+                return true;
+            }
+            game.name
+                .contains(filter_params.name.as_ref().unwrap().as_str())
+        })
+        .filter(|game| {
+            if filter_params.players.is_none() {
+                return true;
+            }
+
+            let player_count = filter_params.players.unwrap();
+            game.min_players <= player_count && player_count <= game.max_players
         })
         .collect();
 }

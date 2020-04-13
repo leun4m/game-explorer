@@ -10,6 +10,8 @@ mod content_types {
 #[derive(Deserialize)]
 pub struct FilterParams {
     pub is_turn_based: Option<bool>,
+    pub name: Option<String>,
+    pub players: Option<u8>,
 }
 
 #[get("/games")]
