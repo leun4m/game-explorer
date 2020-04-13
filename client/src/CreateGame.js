@@ -1,4 +1,5 @@
 import React from "react";
+import GameService from "./GameService";
 
 class CreateGame extends React.Component {
   constructor(props) {
@@ -13,6 +14,8 @@ class CreateGame extends React.Component {
 
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+
+    GameService.getGames().then((data) => {});
   }
 
   handleInputChange(event) {
@@ -23,11 +26,26 @@ class CreateGame extends React.Component {
     this.setState({
       [name]: value,
     });
+    console.log(this.createGameDto());
   }
 
   handleSubmit(event) {
     event.preventDefault();
     console.log(this.state);
+
+    GameService.createGame(this.createGameDto()).then((ok) => {
+      console.log(ok);
+    });
+  }
+
+  createGameDto() {
+    return {
+      name: this.state.name,
+      minPlayers: parseInt(this.state.minPlayers),
+      maxPlayers: parseInt(this.state.maxPlayers),
+      isTurnBased: this.state.isTurnBased,
+      gameType: this.state.gameType.toUpperCase(),
+    };
   }
 
   render() {

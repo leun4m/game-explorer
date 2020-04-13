@@ -48,7 +48,7 @@ pub struct CreateGameDto {
 pub async fn create_game(game: web::Json<CreateGameDto>) -> Result<HttpResponse, Error> {
     println!("Create Game");
 
-    let game = service::create_game(game.name.as_str().to_string(), game.min_players, game.max_players, game.is_turn_based, game.game_type);
+    service::create_game(game.name.as_str().to_string(), game.min_players, game.max_players, game.is_turn_based, game.game_type);
     Ok(HttpResponse::NoContent().body(""))
 }
 
@@ -59,7 +59,7 @@ pub async fn update_game(params: web::Path<Info>, game: web::Json<Game>) -> Resu
         return Ok(HttpResponse::BadRequest().body("ids not matching"));
     }
 
-    let game = service::update_game(game.into_inner());
+    service::update_game(game.into_inner());
     Ok(HttpResponse::NoContent().body(""))
 }
 
