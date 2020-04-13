@@ -1,20 +1,8 @@
 import React from "react";
-import GameService from "./GameService";
 
 class GameLister extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      games: [],
-    };
-  }
-
-  componentDidMount() {
-    GameService.getGames().then((games) => this.setState({ games: games }));
-  }
-
   render() {
-    const games = this.state.games ? this.state.games : [];
+    const games = this.props.games ? this.props.games : [];
     const listItems = games.map((game) => (
       <div key={game.id}>
         <h3>{game.name}</h3>

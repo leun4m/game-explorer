@@ -1,0 +1,6 @@
+.flex-container {
+  display: flex;
+}
+.flex-container aside {
+  min-width: 240px;
+}

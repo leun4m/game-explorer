@@ -1,7 +1,7 @@
 import React from "react";
 import "./App.css";
 import CreateGame from "./CreateGame";
-import GameLister from "./GameLister";
+import GameFilter from "./GameFilter";
 
 class App extends React.Component {
   render() {
@@ -10,9 +10,9 @@ class App extends React.Component {
         <header>
           <h1>GameExplorer</h1>
         </header>
-        <main>
-          <GameLister></GameLister>
-        </main>
+        <div>
+          <GameFilter></GameFilter>
+        </div>
         <footer>
           <hr></hr>
           <CreateGame></CreateGame>
