@@ -49,7 +49,7 @@ class GameFilter extends React.Component {
 
   get filteredGames() {
     const filter = this.state.filter;
-    return this.state.games
+    const games = this.state.games
       .filter((game) => {
         return (
           !filter.players ||
@@ -57,17 +57,19 @@ class GameFilter extends React.Component {
             game.maxPlayers >= filter.players)
         );
       })
-      .sort((gameA, gameB) => {
-        const a = gameA[this.state.sort.sortBy];
-        const b = gameB[this.state.sort.sortBy];
+      .sort((a, b) => {
+        const sortBy = this.state.sort.sortBy;
+        a = a[sortBy];
+        b = b[sortBy];
 
         if (a > b) {
-          return this.state.sort.ascending ? 1 : -1;
+          return 1;
         } else if (b > a) {
-          return this.state.sort.ascending ? -1 : 1;
+          return -1;
         }
         return 0;
       });
+    return this.state.sort.ascending ? games : games.reverse();
   }
 
   render() {
