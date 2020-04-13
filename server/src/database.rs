@@ -1,11 +1,11 @@
 use crate::game::Game;
 use std::fs::File;
-use std::io::{Write, Error};
 use std::io::Read;
+use std::io::{Error, Write};
 
 const FILENAME: &str = "data.json";
 
-pub fn get_games() -> Result<Vec<Game>, Box<Error>>{
+pub fn get_games() -> Result<Vec<Game>, Box<Error>> {
     // Read the input file to string.
     let mut file = File::open(FILENAME)?;
     let mut contents = String::new();
@@ -25,7 +25,7 @@ pub fn save_games(games: Vec<&Game>) -> std::io::Result<()> {
     Ok(())
 }
 
-pub fn save_game(game: &Game)-> std::io::Result<()> {
+pub fn save_game(game: &Game) -> std::io::Result<()> {
     let result = get_games();
     let games = result.as_ref().unwrap();
 

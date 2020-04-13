@@ -1,24 +1,31 @@
-use actix_web::{delete, get, post, put, Responder, HttpResponse, web, Error};
 use crate::game::{Game, GameType};
 use crate::service;
-use serde::{Deserialize};
+use actix_web::{delete, get, post, put, web, Error, HttpResponse, Responder};
+use serde::Deserialize;
 
 mod content_types {
     pub const JSON: &str = "application/json";
 }
 
+#[derive(Deserialize)]
+pub struct FilterParams {
+    pub is_turn_based: Option<bool>,
+}
+
 #[get("/games")]
-pub async fn get_games() -> impl Responder {
-    let saved_games: Vec<Game> = service::get_games();
+pub async fn get_games(filter_params: web::Query<FilterParams>) -> impl Responder {
+    let saved_games: Vec<Game> = service::get_games_filtered(filter_params.into_inner());
 
     let json = serde_json::to_string(&saved_games).unwrap();
 
-    HttpResponse::Ok().content_type(content_types::JSON).body(json)
+    HttpResponse::Ok()
+        .content_type(content_types::JSON)
+        .body(json)
 }
 
 #[derive(Deserialize)]
 pub struct Info {
-    game_id: u32
+    game_id: u32,
 }
 
 #[get("/games/{game_id}")]
@@ -27,11 +34,14 @@ pub async fn get_game(params: web::Path<Info>) -> impl Responder {
 
     if game.is_some() {
         let json = serde_json::to_string(&game).unwrap();
-        HttpResponse::Ok().content_type(content_types::JSON).body(json)
+        HttpResponse::Ok()
+            .content_type(content_types::JSON)
+            .body(json)
     } else {
-        HttpResponse::NoContent().content_type(content_types::JSON).body("")
+        HttpResponse::NoContent()
+            .content_type(content_types::JSON)
+            .body("")
     }
-
 }
 
 #[derive(Deserialize)]
@@ -48,12 +58,21 @@ pub struct CreateGameDto {
 pub async fn create_game(game: web::Json<CreateGameDto>) -> Result<HttpResponse, Error> {
     println!("Create Game");
 
-    service::create_game(game.name.as_str().to_string(), game.min_players, game.max_players, game.is_turn_based, game.game_type);
+    service::create_game(
+        game.name.as_str().to_string(),
+        game.min_players,
+        game.max_players,
+        game.is_turn_based,
+        game.game_type,
+    );
     Ok(HttpResponse::NoContent().body(""))
 }
 
 #[put("/games/{game_id}")]
-pub async fn update_game(params: web::Path<Info>, game: web::Json<Game>) -> Result<HttpResponse, Error> {
+pub async fn update_game(
+    params: web::Path<Info>,
+    game: web::Json<Game>,
+) -> Result<HttpResponse, Error> {
     println!("Update Game");
     if params.game_id != game.id {
         return Ok(HttpResponse::BadRequest().body("ids not matching"));
@@ -64,7 +83,7 @@ pub async fn update_game(params: web::Path<Info>, game: web::Json<Game>) -> Resu
 }
 
 #[delete("/games/{game_id}")]
-pub async fn delete_game(params: web:: Path<Info>) -> Result<HttpResponse, Error> {
+pub async fn delete_game(params: web::Path<Info>) -> Result<HttpResponse, Error> {
     println!("Delete Game");
     service::delete_game(params.game_id);
     Ok(HttpResponse::NoContent().body(""))
