@@ -14,8 +14,6 @@ class CreateGame extends React.Component {
 
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-
-    GameService.getGames().then((data) => {});
   }
 
   handleInputChange(event) {
@@ -31,8 +29,6 @@ class CreateGame extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    console.log(this.state);
-
     GameService.createGame(this.createGameDto()).then((ok) => {
       console.log(ok);
     });
