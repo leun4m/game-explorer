@@ -46,11 +46,12 @@ pub fn get_game(id: u32) -> Option<Game> {
 }
 
 pub fn create_game(
-    name: String,
+    name: &str,
     min_players: u8,
     max_players: u8,
     is_turn_based: bool,
     game_type: GameType,
+    duration: Option<u32>
 ) -> Game {
     let game = Game::new(
         next_game_id(),
@@ -59,6 +60,7 @@ pub fn create_game(
         max_players,
         is_turn_based,
         game_type,
+        duration
     );
     database::save_game(&game).expect("Couldn't save game");
     game

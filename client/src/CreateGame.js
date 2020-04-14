@@ -10,6 +10,7 @@ class CreateGame extends React.Component {
       maxPlayers: "",
       isTurnBased: false,
       gameType: "",
+      duration: "",
     };
 
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -41,6 +42,7 @@ class CreateGame extends React.Component {
       maxPlayers: parseInt(this.state.maxPlayers),
       isTurnBased: this.state.isTurnBased,
       gameType: this.state.gameType.toUpperCase(),
+      duration: parseInt(this.state.duration),
     };
   }
 
@@ -100,6 +102,15 @@ class CreateGame extends React.Component {
             <option value="dice">Dice</option>
             <option value="special">Special</option>
           </select>
+        </label>
+        <label>
+          Duration:
+          <input
+            type="number"
+            name="duration"
+            value={this.state.duration}
+            onChange={this.handleInputChange}
+          />
         </label>
         <input type="submit" value="Create" />
       </form>

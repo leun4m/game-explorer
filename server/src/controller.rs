@@ -54,6 +54,7 @@ pub struct CreateGameDto {
     max_players: u8,
     is_turn_based: bool,
     game_type: GameType,
+    duration: Option<u32>,
 }
 
 #[post("/games")]
@@ -61,11 +62,12 @@ pub async fn create_game(game: web::Json<CreateGameDto>) -> Result<HttpResponse,
     println!("Create Game");
 
     service::create_game(
-        game.name.as_str().to_string(),
+        game.name.as_str(),
         game.min_players,
         game.max_players,
         game.is_turn_based,
         game.game_type,
+        game.duration
     );
     Ok(HttpResponse::NoContent().body(""))
 }
