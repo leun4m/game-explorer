@@ -1,4 +1,4 @@
-use crate::game::{Game, GameType};
+use crate::game::{Game, GameType, GameDetails};
 use crate::service;
 use actix_web::{delete, get, post, put, web, Error, HttpResponse, Responder};
 use serde::Deserialize;
@@ -55,6 +55,8 @@ pub struct CreateGameDto {
     is_turn_based: bool,
     game_type: GameType,
     duration: Option<u32>,
+    age: Option<u8>,
+    details: Option<GameDetails>
 }
 
 #[post("/games")]
@@ -67,7 +69,9 @@ pub async fn create_game(game: web::Json<CreateGameDto>) -> Result<HttpResponse,
         game.max_players,
         game.is_turn_based,
         game.game_type,
-        game.duration
+        game.duration,
+        game.age,
+        game.details.clone()
     );
     Ok(HttpResponse::NoContent().body(""))
 }

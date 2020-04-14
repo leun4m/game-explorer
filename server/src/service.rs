@@ -1,6 +1,6 @@
 use crate::controller::FilterParams;
 use crate::database;
-use crate::game::{Game, GameType};
+use crate::game::{Game, GameType, GameDetails};
 
 pub fn get_games() -> Vec<Game> {
     database::get_games().expect("Couldn't get games")
@@ -51,7 +51,9 @@ pub fn create_game(
     max_players: u8,
     is_turn_based: bool,
     game_type: GameType,
-    duration: Option<u32>
+    duration: Option<u32>,
+    age: Option<u8>,
+    details: Option<GameDetails>
 ) -> Game {
     let game = Game::new(
         next_game_id(),
@@ -60,7 +62,9 @@ pub fn create_game(
         max_players,
         is_turn_based,
         game_type,
-        duration
+        duration,
+        age,
+        details
     );
     database::save_game(&game).expect("Couldn't save game");
     game

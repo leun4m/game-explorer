@@ -11,6 +11,10 @@ class CreateGame extends React.Component {
       isTurnBased: false,
       gameType: "",
       duration: "",
+      age: "",
+      level: "3",
+      luck: "3",
+      strategy: "3",
     };
 
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -43,6 +47,12 @@ class CreateGame extends React.Component {
       isTurnBased: this.state.isTurnBased,
       gameType: this.state.gameType.toUpperCase(),
       duration: parseInt(this.state.duration),
+      age: parseInt(this.state.age),
+      details: {
+        level: parseInt(this.state.level),
+        luck: parseInt(this.state.luck),
+        strategy: parseInt(this.state.strategy),
+      },
     };
   }
 
@@ -109,6 +119,48 @@ class CreateGame extends React.Component {
             type="number"
             name="duration"
             value={this.state.duration}
+            onChange={this.handleInputChange}
+          />
+        </label>
+        <label>
+          Required age:
+          <input
+            type="number"
+            name="age"
+            value={this.state.age}
+            onChange={this.handleInputChange}
+          />
+        </label>
+        <label>
+          Level:
+          <input
+            type="number"
+            min="1"
+            max="5"
+            step="1"
+            value={this.state.level}
+            onChange={this.handleInputChange}
+          />
+        </label>
+        <label>
+          Level:
+          <input
+            type="number"
+            min="1"
+            max="5"
+            step="1"
+            value={this.state.luck}
+            onChange={this.handleInputChange}
+          />
+        </label>
+        <label>
+          Level:
+          <input
+            type="number"
+            min="1"
+            max="5"
+            step="1"
+            value={this.state.strategy}
             onChange={this.handleInputChange}
           />
         </label>

@@ -11,6 +11,16 @@ pub struct Game {
     pub game_type: GameType,
     // in minutes
     pub duration: Option<u32>,
+    pub age: Option<u8>,
+    pub details: Option<GameDetails>,
+}
+
+#[derive(Clone, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct GameDetails {
+    pub level: Option<u8>,
+    pub luck: Option<u8>,
+    pub strategy: Option<u8>
 }
 
 #[derive(Copy, Clone, Serialize, Deserialize)]
@@ -31,7 +41,9 @@ impl Game {
         max_players: u8,
         is_turn_based: bool,
         game_type: GameType,
-        duration: Option<u32>
+        duration: Option<u32>,
+        age: Option<u8>,
+        details: Option<GameDetails>
     ) -> Game {
         assert_ne!(name, "", "name must not be empty");
         assert!(min_players > 0, "min_players must be higher than 0");
@@ -47,7 +59,9 @@ impl Game {
             max_players,
             is_turn_based,
             game_type,
-            duration
+            duration,
+            age,
+            details
         }
     }
 
